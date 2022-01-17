@@ -1,0 +1,41 @@
+---
+title: "Barplots"
+author: "Kyle Rodriguez"
+date: "1/17/2022"
+output: html_document
+---
+
+```{r}
+library(dplyr)
+library(tidyverse)
+library(plotly)
+library(ggplot2)
+library(RColorBrewer)
+library(cowplot)
+library(data.table)
+library(scales)
+library(plotly)
+```
+
+## Barplots
+```{r}
+GSS2018 <- read.csv('C:/Users/rodri/Desktop/NCFS2/DataVis/Datasets/GSS2018.csv')
+
+```
+
+```{r}
+GSS2018.pray <- GSS2018 %>% select(pray) %>% mutate(pray=as.factor(pray)) %>% drop_na() %>% count(pray)%>% mutate(precent=100*n/sum(n))
+GSS2018.pray
+
+``` 
+
+```{r}
+mycols <- brewer.pal(6,'Set2')
+ggplot(data=GSS2018.pray,aes(x=pray,y=precent, fill= pray))+
+  geom_bar(stat='identity') + 
+  guides(fill='none')+ 
+  labs(x="",y="Percent (%)",title="Frequency of Praying") + 
+  scale_x_discrete(labels=c('Several Times \nPer Day','Once Per Day','Several Times \nPer Week','Once Per Week','Less Than \nOnce Per Week','Never')) +
+  scale_y_continuous(expand=c(0,0)) +
+  theme_classic()+ scale_fill_manual(values=mycols)+
+  theme(plot.title = element_text(hjust = 0.5))
