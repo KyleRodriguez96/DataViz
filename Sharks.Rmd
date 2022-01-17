@@ -1,0 +1,43 @@
+---
+title: "Sharks"
+author: "Kyle Rodriguez"
+date: "1/17/2022"
+output: html_document
+---
+
+```{r}
+library(dplyr)
+library(tidyverse)
+library(plotly)
+library(ggplot2)
+library(RColorBrewer)
+library(cowplot)
+library(data.table)
+library(scales)
+library(plotly)
+```
+
+
+```{r}
+Shark <- read.csv('C:/Users/rodri/Desktop/NCFS2/DataVis/Datasets/SharksClean.csv')
+Shark
+```
+
+```{r}
+plot_ly(data=Shark,
+        type = 'scatter', mode = 'markers',
+        x= ~BodySize,
+        y= ~ToothSize,
+        color= ~Genus,
+        text= ~Species,
+        hovertemplate = paste('<b>Species:</b> %{text} <br>', 
+                              '<b>%{xaxis.title.text}:</b> %{x:} <br>',
+                              '<b>%{yaxis.title.text}:</b> %{y}',
+                              '<extra></extra>'),
+       hoverinfo= 'text' ) %>%
+  layout(
+    xaxis = list(title="Body Size", range=c(75,625)),
+    yaxis = list(title="Tooth Size", zeroline = F,range=c(-1,52)),
+    title = list(text='Shark Teeth',xref='paper')
+  )
+```
